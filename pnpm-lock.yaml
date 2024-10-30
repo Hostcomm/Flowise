@@ -605,12 +605,6 @@ importers:
 
     packages/ui:
         dependencies:
-            '@birksy89/flowise-embed':
-                specifier: ^1.2.3
-                version: 1.2.3(bufferutil@4.0.8)
-            '@birksy89/flowise-embed-react':
-                specifier: ^1.0.3
-                version: 1.0.3(@birksy89/flowise-embed@1.2.3(bufferutil@4.0.8))(@types/node@20.14.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1)(terser@5.29.1)(typescript@5.6.3)
             '@codemirror/lang-javascript':
                 specifier: ^6.2.1
                 version: 6.2.2
@@ -2417,15 +2411,6 @@ packages:
 
     '@bcoe/v8-coverage@0.2.3':
         resolution: { integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw== }
-
-    '@birksy89/flowise-embed-react@1.0.3':
-        resolution: { integrity: sha512-4WNmktggo9MkLRXJpX2CR6r19yMMEE0uds9U4MHDhUL4i/nJwocsywWgsikUIa4kBSrY3yJ7Pr9z5eVyQ6wwYw== }
-        peerDependencies:
-            '@birksy89/flowise-embed': ^1.0.19
-            react: 18.x
-
-    '@birksy89/flowise-embed@1.2.3':
-        resolution: { integrity: sha512-W8OgjT8tdsw96LHWYlGlqR4LCkoxiDPge/wppQauej2dLsua/fgsmoRlQfoWTDruwN55soId7cW1D6wUHt3z4Q== }
 
     '@codemirror/autocomplete@6.14.0':
         resolution: { integrity: sha512-Kx9BCSOLKmqNXEvmViuzsBQJ2VEa/wWwOATNpixOa+suttTV3rDnAUtAIt5ObAUFjXvZakWfFfF/EbxELnGLzQ== }
@@ -18563,38 +18548,6 @@ snapshots:
             '@babel/helper-validator-identifier': 7.25.9
 
     '@bcoe/v8-coverage@0.2.3': {}
-
-    '@birksy89/flowise-embed-react@1.0.3(@birksy89/flowise-embed@1.2.3(bufferutil@4.0.8))(@types/node@20.14.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1)(terser@5.29.1)(typescript@5.6.3)':
-        dependencies:
-            '@birksy89/flowise-embed': 1.2.3(bufferutil@4.0.8)
-            '@ladle/react': 2.5.1(@types/node@20.14.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1)(terser@5.29.1)(typescript@5.6.3)
-            react: 18.2.0
-        transitivePeerDependencies:
-            - '@types/node'
-            - less
-            - lightningcss
-            - react-dom
-            - sass
-            - stylus
-            - sugarss
-            - supports-color
-            - terser
-            - typescript
-
-    '@birksy89/flowise-embed@1.2.3(bufferutil@4.0.8)':
-        dependencies:
-            '@babel/core': 7.24.0
-            '@ts-stack/markdown': 1.5.0
-            device-detector-js: 3.0.3
-            lodash: 4.17.21
-            prettier: 3.2.5
-            socket.io-client: 4.7.4(bufferutil@4.0.8)
-            solid-element: 1.7.0(solid-js@1.7.1)
-            solid-js: 1.7.1
-        transitivePeerDependencies:
-            - bufferutil
-            - supports-color
-            - utf-8-validate
 
     '@codemirror/autocomplete@6.14.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.25.1)(@lezer/common@1.2.1)':
         dependencies:
