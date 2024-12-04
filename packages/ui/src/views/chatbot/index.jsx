@@ -117,11 +117,21 @@ const ChatbotFull = () => {
                         <p>Invalid Chatbot</p>
                     ) : (
                         <FullPageChat
+                            poweredByTextColor='#fff'
                             chatflowid={chatflow.id}
                             apiHost={baseURL}
                             chatflowConfig={chatbotOverrideConfig}
                             // Nothing was passed in for the "button", which is used for the header color. This makes it the Hostcomm blue color.
-                            theme={{ chatWindow: chatbotTheme, button: { backgroundColor: '#0099CD' } }}
+                            theme={{
+                                chatWindow: {
+                                    ...chatbotTheme,
+                                    footer: {
+                                        company: 'CXCortex',
+                                        companyLink: 'https://www.hostcomm.co.uk/solutions/cx-analytics'
+                                    }
+                                },
+                                button: { backgroundColor: '#0099CD' }
+                            }}
                         />
                     )}
                     <LoginDialog show={loginDialogOpen} dialogProps={loginDialogProps} onConfirm={onLoginClick} />
