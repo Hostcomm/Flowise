@@ -34,6 +34,5 @@ export const utilAddChatMessage = async (chatMessage: Partial<IChatMessage>, app
         console.error(error)
     }
 
-    
     return dbResponse
 }
