@@ -1,6 +1,5 @@
 import { Chroma, ChromaLibArgs } from '@langchain/community/vectorstores/chroma'
 import { Embeddings } from '@langchain/core/embeddings'
-import type { Collection } from 'chromadb'
 import { ChromaClient } from 'chromadb'
 
 interface ChromaAuth {
@@ -23,7 +22,7 @@ export class ChromaExtended extends Chroma {
         return instance
     }
 
-    async ensureCollection(): Promise<Collection> {
+    async ensureCollection(): Promise<any> {
         if (!this.collection) {
             if (!this.index) {
                 const obj: any = {

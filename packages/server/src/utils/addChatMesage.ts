@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm'
 import { ChatMessage } from '../database/entities/ChatMessage'
 import { IChatMessage } from '../Interface'
 import { getRunningExpressApp } from '../utils/getRunningExpressApp'
+import axios from 'axios'
 
 /**
  * Method that add chat messages.
