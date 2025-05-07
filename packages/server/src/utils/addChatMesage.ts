@@ -17,7 +17,7 @@ export const utilAddChatMessage = async (chatMessage: Partial<IChatMessage>, app
     }
     const chatmessage = await dataSource.getRepository(ChatMessage).create(newChatMessage)
     const dbResponse = await dataSource.getRepository(ChatMessage).save(chatmessage)
-   
+
     // When a chat message is created, we want to post it to the CXCortex Console
     try {
         const cxcortexURL = `${process.env.CXCORTEX_CONSOLE_URL}/api/webhook/flowise`
