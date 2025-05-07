@@ -116,19 +116,27 @@ const OverrideConfig = ({ dialogProps }) => {
     }
 
     const formatObj = () => {
-        const obj = {
-            overrideConfig: { status: overrideConfigStatus }
+        let apiConfig = JSON.parse(dialogProps.chatflow.apiConfig)
+        if (apiConfig === null || apiConfig === undefined) {
+            apiConfig = {}
         }
 
+        let overrideConfig = { status: overrideConfigStatus }
         if (overrideConfigStatus) {
-            obj.overrideConfig = {
-                ...obj.overrideConfig,
-                nodes: nodeOverrides,
-                variables: variableOverrides
+            const filteredNodeOverrides = {}
+            for (const key in nodeOverrides) {
+                filteredNodeOverrides[key] = nodeOverrides[key].filter((node) => node.enabled)
+            }
+
+            overrideConfig = {
+                ...overrideConfig,
+                nodes: filteredNodeOverrides,
+                variables: variableOverrides.filter((node) => node.enabled)
             }
         }
+        apiConfig.overrideConfig = overrideConfig
 
-        return obj
+        return apiConfig
     }
 
     const onNodeOverrideToggle = (node, property, status) => {
@@ -200,7 +208,7 @@ const OverrideConfig = ({ dialogProps }) => {
         if (!overrideConfigStatus) {
             setNodeOverrides(newNodeOverrides)
         } else {
-            const updatedNodeOverrides = { ...nodeOverrides }
+            const updatedNodeOverrides = { ...newNodeOverrides }
 
             Object.keys(updatedNodeOverrides).forEach((node) => {
                 if (!seenNodes.has(node)) {
@@ -400,7 +408,7 @@ const OverrideConfig = ({ dialogProps }) => {
                                 </Stack>
                             </Card>
                         )}
-                        {variableOverrides && (
+                        {variableOverrides && variableOverrides.length > 0 && (
                             <Card sx={{ borderColor: theme.palette.primary[200] + 75, p: 2 }} variant='outlined'>
                                 <Stack sx={{ mt: 1, mb: 2, ml: 1, alignItems: 'center' }} direction='row' spacing={2}>
                                     <IconVariable />

@@ -5,6 +5,7 @@ import { ICommonObject, IMultiModalOption, INode, INodeData, INodeOptionsValue, 
 import { convertMultiOptionsToStringArray, getBaseClasses, getCredentialData, getCredentialParam } from '../../../src/utils'
 import { getModels, MODEL_TYPE } from '../../../src/modelLoader'
 import { ChatGoogleGenerativeAI, GoogleGenerativeAIChatInput } from './FlowiseChatGoogleGenerativeAI'
+import type FlowiseGoogleAICacheManager from '../../cache/GoogleGenerativeAIContextCache/FlowiseGoogleAICacheManager'
 
 class GoogleGenerativeAI_ChatModels implements INode {
     label: string
@@ -21,7 +22,7 @@ class GoogleGenerativeAI_ChatModels implements INode {
     constructor() {
         this.label = 'ChatGoogleGenerativeAI'
         this.name = 'chatGoogleGenerativeAI'
-        this.version = 2.1
+        this.version = 3.0
         this.type = 'ChatGoogleGenerativeAI'
         this.icon = 'GoogleGemini.svg'
         this.category = 'Chat Models'
@@ -43,11 +44,17 @@ class GoogleGenerativeAI_ChatModels implements INode {
                 optional: true
             },
             {
+                label: 'Context Cache',
+                name: 'contextCache',
+                type: 'GoogleAICacheManager',
+                optional: true
+            },
+            {
                 label: 'Model Name',
                 name: 'modelName',
                 type: 'asyncOptions',
                 loadMethod: 'listModels',
-                default: 'gemini-pro'
+                default: 'gemini-1.5-flash-latest'
             },
             {
                 label: 'Custom Model Name',
@@ -64,6 +71,14 @@ class GoogleGenerativeAI_ChatModels implements INode {
                 step: 0.1,
                 default: 0.9,
                 optional: true
+            },
+            {
+                label: 'Streaming',
+                name: 'streaming',
+                type: 'boolean',
+                default: true,
+                optional: true,
+                additionalParams: true
             },
             {
                 label: 'Max Output Tokens',
@@ -149,11 +164,19 @@ class GoogleGenerativeAI_ChatModels implements INode {
                 additionalParams: true
             },
             {
+                label: 'Base URL',
+                name: 'baseUrl',
+                type: 'string',
+                description: 'Base URL for the API. Leave empty to use the default.',
+                optional: true,
+                additionalParams: true
+            },
+            {
                 label: 'Allow Image Uploads',
                 name: 'allowImageUploads',
                 type: 'boolean',
                 description:
-                    'Automatically uses vision model when image is being uploaded from chat. Only works with LLMChain, Conversation Chain, ReAct Agent, Conversational Agent, Tool Agent',
+                    'Allow image input. Refer to the <a href="https://docs.flowiseai.com/using-flowise/uploads#image" target="_blank">docs</a> for more details.',
                 default: false,
                 optional: true
             }
@@ -180,7 +203,9 @@ class GoogleGenerativeAI_ChatModels implements INode {
         const harmCategory = nodeData.inputs?.harmCategory as string
         const harmBlockThreshold = nodeData.inputs?.harmBlockThreshold as string
         const cache = nodeData.inputs?.cache as BaseCache
+        const contextCache = nodeData.inputs?.contextCache as FlowiseGoogleAICacheManager
         const streaming = nodeData.inputs?.streaming as boolean
+        const baseUrl = nodeData.inputs?.baseUrl as string | undefined
 
         const allowImageUploads = nodeData.inputs?.allowImageUploads as boolean
 
@@ -195,6 +220,7 @@ class GoogleGenerativeAI_ChatModels implements INode {
         if (topK) obj.topK = parseFloat(topK)
         if (cache) obj.cache = cache
         if (temperature) obj.temperature = parseFloat(temperature)
+        if (baseUrl) obj.baseUrl = baseUrl
 
         // Safety Settings
         let harmCategories: string[] = convertMultiOptionsToStringArray(harmCategory)
@@ -217,6 +243,7 @@ class GoogleGenerativeAI_ChatModels implements INode {
 
         const model = new ChatGoogleGenerativeAI(nodeData.id, obj)
         model.setMultiModalOption(multiModalOption)
+        if (contextCache) model.setContextCache(contextCache)
 
         return model
     }

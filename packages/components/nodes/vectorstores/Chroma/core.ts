@@ -1,5 +1,6 @@
 import { Chroma, ChromaLibArgs } from '@langchain/community/vectorstores/chroma'
 import { Embeddings } from '@langchain/core/embeddings'
+import type { Collection } from 'chromadb'
 import { ChromaClient } from 'chromadb'
 
 interface ChromaAuth {
@@ -8,6 +9,8 @@ interface ChromaAuth {
 
 export class ChromaExtended extends Chroma {
     chromaApiKey?: string
+    chromaTenant?: string
+    chromaDatabase?: string
 
     constructor(embeddings: Embeddings, args: ChromaLibArgs & Partial<ChromaAuth>) {
         super(embeddings, args)
@@ -20,7 +23,7 @@ export class ChromaExtended extends Chroma {
         return instance
     }
 
-    async ensureCollection(): Promise<any> {
+    async ensureCollection(): Promise<Collection> {
         if (!this.collection) {
             if (!this.index) {
                 const obj: any = {
@@ -32,6 +35,12 @@ export class ChromaExtended extends Chroma {
                             Authorization: `Bearer ${this.chromaApiKey}`
                         }
                     }
+                }
+                if (this.chromaTenant) {
+                    obj.tenant = this.chromaTenant
+                }
+                if (this.chromaDatabase) {
+                    obj.database = this.chromaDatabase
                 }
                 this.index = new ChromaClient(obj)
             }
